@@ -1,0 +1,267 @@
+.product-card {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &.selected {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
+
+  &.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .ant-card-body {
+    padding: 16px;
+  }
+
+  .ant-card-actions {
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+
+    .ant-card-actions > li {
+      margin: 8px 0;
+    }
+
+    .ant-btn {
+      border: none;
+      box-shadow: none;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06);
+      }
+    }
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+
+    .product-avatar {
+      margin-right: 12px;
+      flex-shrink: 0;
+
+      .ant-avatar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        font-weight: 600;
+      }
+    }
+
+    .product-info {
+      flex: 1;
+      min-width: 0;
+
+      .product-title {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.4;
+
+        &.ant-typography {
+          margin-bottom: 4px;
+        }
+      }
+
+      .product-id {
+        font-size: 12px;
+        color: #999;
+      }
+    }
+  }
+
+  .card-content {
+    .price-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 8px;
+
+      .current-price {
+        font-size: 18px;
+        color: #f5222d;
+        font-weight: 600;
+      }
+
+      .sold-price {
+        font-size: 14px;
+      }
+    }
+
+    .description {
+      margin-bottom: 12px;
+
+      .desc-text {
+        color: #666;
+        font-size: 13px;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    .tags-section {
+      margin-bottom: 12px;
+      min-height: 22px;
+
+      .ant-tag {
+        margin-bottom: 4px;
+        font-size: 12px;
+        border-radius: 10px;
+        padding: 1px 8px;
+      }
+    }
+
+    .sync-status {
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: #f9f9f9;
+      border-radius: 6px;
+      border-left: 3px solid #e8e8e8;
+
+      .sync-text {
+        font-size: 12px;
+      }
+
+      &:has(.anticon-check-circle) {
+        background: #f6ffed;
+        border-left-color: #52c41a;
+      }
+
+      &:has(.anticon-sync) {
+        background: #e6f7ff;
+        border-left-color: #1890ff;
+      }
+
+      &:has(.anticon-exclamation-circle) {
+        background: #fff2f0;
+        border-left-color: #ff4d4f;
+      }
+
+      &:has(.anticon-clock-circle) {
+        background: #fffbe6;
+        border-left-color: #faad14;
+      }
+    }
+
+    .card-footer {
+      border-top: 1px solid #f0f0f0;
+      padding-top: 8px;
+      margin-top: 8px;
+
+      .update-time {
+        font-size: 11px;
+        color: #ccc;
+      }
+    }
+  }
+}
+
+// 网格布局优化
+.ant-row .ant-col {
+  .product-card {
+    height: 100%;
+    
+    .ant-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ant-card-body {
+      flex: 1;
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .product-card {
+    .card-header {
+      .product-avatar {
+        margin-right: 8px;
+
+        .ant-avatar {
+          width: 32px;
+          height: 32px;
+          line-height: 32px;
+          font-size: 14px;
+        }
+      }
+
+      .product-info {
+        .product-title {
+          font-size: 14px;
+        }
+
+        .product-id {
+          font-size: 11px;
+        }
+      }
+    }
+
+    .card-content {
+      .price-section {
+        .current-price {
+          font-size: 16px;
+        }
+      }
+
+      .description {
+        .desc-text {
+          font-size: 12px;
+        }
+      }
+
+      .sync-status {
+        padding: 6px 10px;
+      }
+    }
+
+    .ant-card-actions {
+      .ant-card-actions > li {
+        margin: 4px 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .product-card {
+    .card-header {
+      flex-direction: column;
+      text-align: center;
+
+      .product-avatar {
+        margin: 0 0 8px 0;
+        align-self: center;
+      }
+
+      .product-info {
+        .product-title {
+          text-align: center;
+        }
+      }
+    }
+
+    .card-content {
+      .price-section {
+        justify-content: center;
+      }
+
+      .tags-section {
+        text-align: center;
+      }
+    }
+  }
+}

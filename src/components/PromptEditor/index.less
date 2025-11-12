@@ -1,0 +1,152 @@
+.prompt-editor {
+  .editor-card {
+    .ant-card-body {
+      padding: 0;
+    }
+  }
+
+  .editor-tabs {
+    .ant-tabs-nav {
+      margin: 0;
+      padding: 16px 24px 0;
+      background: #fafafa;
+    }
+
+    .ant-tabs-content {
+      padding: 16px 24px 24px;
+    }
+  }
+
+  .monaco-editor-container {
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  &.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: #fff;
+    padding: 20px;
+
+    .editor-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .ant-card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .editor-tabs {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        .ant-tabs-content-holder {
+          flex: 1;
+        }
+
+        .ant-tabs-content {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.preview-content {
+  .preview-stats {
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    margin-bottom: 16px;
+
+    span {
+      color: #666;
+      font-size: 12px;
+    }
+  }
+
+  .preview-variables {
+    margin-bottom: 16px;
+
+    h4 {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .variable-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 4px;
+      font-size: 12px;
+
+      code {
+        background: #f5f5f5;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin-right: 8px;
+        font-family: 'Consolas', 'Monaco', monospace;
+      }
+
+      span {
+        color: #1890ff;
+      }
+    }
+  }
+
+  .preview-result {
+    h4 {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .preview-text {
+      background: #f9f9f9;
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      padding: 12px;
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.6;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .prompt-editor {
+    .editor-card .ant-card-extra {
+      .ant-space {
+        .ant-space-item {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    &.fullscreen {
+      padding: 10px;
+    }
+  }
+
+  .preview-content {
+    .preview-variables .variable-item {
+      flex-direction: column;
+      align-items: flex-start;
+
+      code {
+        margin-right: 0;
+        margin-bottom: 4px;
+      }
+    }
+  }
+}

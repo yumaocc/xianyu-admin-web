@@ -1,0 +1,186 @@
+.sync-status {
+  .current-sync {
+    .sync-header {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .sync-progress {
+      margin-bottom: 16px;
+
+      .progress-info {
+        margin-top: 8px;
+        text-align: right;
+      }
+    }
+
+    .sync-info {
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #fafafa;
+      border-radius: 6px;
+
+      .ant-space-item {
+        width: 100%;
+      }
+    }
+
+    .sync-actions {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+  }
+
+  .no-sync {
+    padding: 40px 20px;
+    text-align: center;
+
+    .anticon {
+      margin-bottom: 16px;
+    }
+  }
+
+  .sync-history {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+
+    .ant-timeline {
+      margin-top: 16px;
+
+      .ant-timeline-item {
+        .ant-timeline-item-content {
+          margin-left: 16px;
+
+          .ant-btn-link {
+            padding: 0;
+            height: auto;
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.sync-status-compact {
+  .ant-card-body {
+    padding: 12px 16px;
+  }
+
+  .ant-progress-circle {
+    .ant-progress-text {
+      display: none;
+    }
+  }
+}
+
+// 状态颜色
+.sync-status {
+  .status-running {
+    .ant-progress-bg {
+      background: linear-gradient(90deg, #1890ff, #722ed1);
+    }
+  }
+
+  .status-completed {
+    .ant-alert-success {
+      background: #f6ffed;
+      border-color: #b7eb8f;
+    }
+  }
+
+  .status-error {
+    .ant-alert-error {
+      background: #fff2f0;
+      border-color: #ffccc7;
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .sync-status {
+    .current-sync {
+      .sync-header {
+        .ant-space {
+          flex-wrap: wrap;
+        }
+      }
+
+      .sync-actions {
+        .ant-space {
+          flex-wrap: wrap;
+          justify-content: center;
+
+          .ant-space-item {
+            margin-bottom: 8px;
+          }
+        }
+      }
+    }
+
+    .sync-history {
+      .ant-timeline {
+        .ant-timeline-item-content {
+          margin-left: 8px;
+
+          > div {
+            margin-bottom: 4px;
+
+            .ant-btn-link {
+              display: block;
+              margin-left: 0;
+              margin-top: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .sync-status-compact {
+    .ant-card-body {
+      padding: 8px 12px;
+
+      .ant-space {
+        flex-wrap: wrap;
+
+        .ant-space-item {
+          margin-bottom: 4px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .sync-status {
+    .current-sync {
+      .sync-header {
+        text-align: center;
+
+        .ant-typography {
+          margin-bottom: 8px;
+        }
+      }
+
+      .sync-info {
+        .ant-space-vertical {
+          .ant-space-item {
+            > div {
+              display: flex;
+              flex-direction: column;
+              text-align: center;
+
+              .ant-typography:first-child {
+                margin-bottom: 4px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
