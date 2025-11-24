@@ -174,7 +174,7 @@ export default function useGlobalModel(): GlobalModel {
       return;
     }
 
-    const wsUrl = `ws://localhost:5001/ws`;
+    const wsUrl = `ws://localhost:5000/ws`;
     ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {

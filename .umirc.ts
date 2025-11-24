@@ -100,13 +100,13 @@ export default defineConfig({
     },
   },
   define: {
-    API_BASE_URL: process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:5001' 
+    API_BASE_URL: process.env.NODE_ENV === 'development'
+      ? 'http://localhost:5001'
       : 'https://your-api-domain.com',
   },
   hash: true,
   outputPath: 'dist',
-  publicPath: process.env.NODE_ENV === 'production' ? '/static/' : '/',
+  publicPath: '/',
   targets: {
     chrome: 80,
   },

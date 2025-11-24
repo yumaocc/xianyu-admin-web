@@ -141,7 +141,7 @@ const Settings: React.FC = () => {
             </Row>
             
             <Form.Item label="API地址">
-              <Input defaultValue="http://localhost:5001" />
+              <Input defaultValue="http://localhost:5000" />
             </Form.Item>
 
             <Form.Item label="启用调试模式" valuePropName="checked">
