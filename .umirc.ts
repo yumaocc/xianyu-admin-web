@@ -89,19 +89,19 @@ export default defineConfig({
   mock: false, // 禁用 mock，使用真实后端
   proxy: {
     '/api': {
-      target: 'http://localhost:5001',
+      target: 'http://localhost:5000',
       changeOrigin: true,
       pathRewrite: { '^/api': '/api' },
     },
-    '/ws': {
-      target: 'ws://localhost:5001',
-      ws: true,
-      changeOrigin: true,
-    },
+    // '/ws': {  // 暂时禁用 WebSocket
+    //   target: 'ws://localhost:5000',
+    //   ws: true,
+    //   changeOrigin: true,
+    // },
   },
   define: {
     API_BASE_URL: process.env.NODE_ENV === 'development'
-      ? 'http://localhost:5001'
+      ? 'http://localhost:5000'
       : 'https://your-api-domain.com',
   },
   hash: true,

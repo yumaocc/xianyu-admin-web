@@ -1,9 +1,9 @@
-import { useState, useCallback, useEffect } from 'react';
-import { message } from 'antd';
-import type { User, SystemStats, NotificationMessage } from '@/types';
-import * as authService from '@/services/auth';
-import * as systemService from '@/services/system';
-import { authStorage } from '@/utils/storage';
+import { useState, useCallback, useEffect } from "react";
+import { message } from "antd";
+import type { User, SystemStats, NotificationMessage } from "@/types";
+import * as authService from "@/services/auth";
+import * as systemService from "@/services/system";
+import { authStorage } from "@/utils/storage";
 
 export interface GlobalModel {
   // 状态
@@ -14,11 +14,11 @@ export interface GlobalModel {
   unreadCount: number;
   loading: boolean;
   sidebarCollapsed: boolean;
-  theme: 'light' | 'dark';
-  
+  theme: "light" | "dark";
+
   // WebSocket 连接
   wsConnected: boolean;
-  
+
   // 操作
   login: (credentials: any) => Promise<boolean>;
   logout: () => Promise<void>;
@@ -28,8 +28,8 @@ export interface GlobalModel {
   markNotificationRead: (id: string) => Promise<void>;
   toggleSidebar: () => void;
   toggleTheme: () => void;
-  initWebSocket: () => void;
-  closeWebSocket: () => void;
+  // initWebSocket: () => void;
+  // closeWebSocket: () => void;
   reset: () => void;
 }
 
@@ -43,7 +43,7 @@ export default function useGlobalModel(): GlobalModel {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [wsConnected, setWsConnected] = useState(false);
 
   // 登录
@@ -57,13 +57,13 @@ export default function useGlobalModel(): GlobalModel {
         authStorage.setUserInfo(userData);
         setUser(userData);
         setAuthenticated(true);
-        message.success('登录成功');
+        message.success("登录成功");
         return true;
       }
       return false;
     } catch (error) {
-      console.error('Login failed:', error);
-      message.error('登录失败');
+      console.error("Login failed:", error);
+      message.error("登录失败");
       return false;
     } finally {
       setLoading(false);
@@ -75,13 +75,13 @@ export default function useGlobalModel(): GlobalModel {
     try {
       await authService.logout();
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     } finally {
       authStorage.clear();
       setUser(null);
       setAuthenticated(false);
-      closeWebSocket();
-      message.success('已退出登录');
+      // closeWebSocket();
+      message.success("已退出登录");
     }
   }, []);
 
@@ -105,7 +105,7 @@ export default function useGlobalModel(): GlobalModel {
         setAuthenticated(false);
       }
     } catch (error) {
-      console.error('Failed to fetch current user:', error);
+      console.error("Failed to fetch current user:", error);
       authStorage.clear();
       setAuthenticated(false);
     }
@@ -119,7 +119,7 @@ export default function useGlobalModel(): GlobalModel {
         setStats(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch stats:', error);
+      console.error("Failed to fetch stats:", error);
     }
   }, []);
 
@@ -135,7 +135,7 @@ export default function useGlobalModel(): GlobalModel {
         setUnreadCount(response.data.unreadCount);
       }
     } catch (error) {
-      console.error('Failed to fetch notifications:', error);
+      console.error("Failed to fetch notifications:", error);
     }
   }, []);
 
@@ -144,98 +144,98 @@ export default function useGlobalModel(): GlobalModel {
     try {
       const response = await systemService.markNotificationRead(id);
       if (response.success) {
-        setNotifications(prev =>
-          prev.map(n => (n.id === id ? { ...n, read: true } : n))
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === id ? { ...n, read: true } : n))
         );
-        setUnreadCount(prev => Math.max(0, prev - 1));
+        setUnreadCount((prev) => Math.max(0, prev - 1));
       }
     } catch (error) {
-      console.error('Failed to mark notification read:', error);
+      console.error("Failed to mark notification read:", error);
     }
   }, []);
 
   // 切换侧边栏
   const toggleSidebar = useCallback(() => {
-    setSidebarCollapsed(prev => !prev);
-    localStorage.setItem('sidebar_collapsed', (!sidebarCollapsed).toString());
+    setSidebarCollapsed((prev) => !prev);
+    localStorage.setItem("sidebar_collapsed", (!sidebarCollapsed).toString());
   }, [sidebarCollapsed]);
 
   // 切换主题
   const toggleTheme = useCallback(() => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
   }, [theme]);
 
-  // 初始化 WebSocket
-  const initWebSocket = useCallback(() => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      return;
-    }
+  // 初始化 WebSocket (暂时禁用)
+  // const initWebSocket = useCallback(() => {
+  //   if (ws && ws.readyState === WebSocket.OPEN) {
+  //     return;
+  //   }
 
-    const wsUrl = `ws://localhost:5000/ws`;
-    ws = new WebSocket(wsUrl);
+  //   const wsUrl = `ws://localhost:5000/ws`;
+  //   ws = new WebSocket(wsUrl);
 
-    ws.onopen = () => {
-      console.log('WebSocket connected');
-      setWsConnected(true);
-    };
+  //   ws.onopen = () => {
+  //     console.log('WebSocket connected');
+  //     setWsConnected(true);
+  //   };
 
-    ws.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data);
-        
-        switch (message.type) {
-          case 'stats_update':
-            setStats(message.data);
-            break;
-          case 'notification':
-            setNotifications(prev => [message.data, ...prev]);
-            if (!message.data.read) {
-              setUnreadCount(prev => prev + 1);
-            }
-            break;
-          case 'sync_status':
-            // 可以在这里处理同步状态更新
-            break;
-          case 'error':
-            message.error(message.data.message || '发生错误');
-            break;
-          default:
-            console.log('Unknown WebSocket message:', message);
-        }
-      } catch (error) {
-        console.error('Failed to parse WebSocket message:', error);
-      }
-    };
+  //   ws.onmessage = (event) => {
+  //     try {
+  //       const message = JSON.parse(event.data);
+  //
+  //       switch (message.type) {
+  //         case 'stats_update':
+  //           setStats(message.data);
+  //           break;
+  //         case 'notification':
+  //           setNotifications(prev => [message.data, ...prev]);
+  //           if (!message.data.read) {
+  //             setUnreadCount(prev => prev + 1);
+  //           }
+  //           break;
+  //         case 'sync_status':
+  //           // 可以在这里处理同步状态更新
+  //           break;
+  //         case 'error':
+  //           message.error(message.data.message || '发生错误');
+  //           break;
+  //         default:
+  //           console.log('Unknown WebSocket message:', message);
+  //       }
+  //     } catch (error) {
+  //       console.error('Failed to parse WebSocket message:', error);
+  //     }
+  //   };
 
-    ws.onclose = () => {
-      console.log('WebSocket disconnected');
-      setWsConnected(false);
-      
-      // 自动重连
-      if (authenticated) {
-        setTimeout(() => {
-          initWebSocket();
-        }, 3000);
-      }
-    };
+  //   ws.onclose = () => {
+  //     console.log('WebSocket disconnected');
+  //     setWsConnected(false);
+  //
+  //     // 自动重连
+  //     if (authenticated) {
+  //       setTimeout(() => {
+  //         initWebSocket();
+  //       }, 3000);
+  //     }
+  //   };
 
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-      setWsConnected(false);
-    };
-  }, [authenticated]);
+  //   ws.onerror = (error) => {
+  //     console.error('WebSocket error:', error);
+  //     setWsConnected(false);
+  //   };
+  // }, [authenticated]);
 
-  // 关闭 WebSocket
-  const closeWebSocket = useCallback(() => {
-    if (ws) {
-      ws.close();
-      ws = null;
-      setWsConnected(false);
-    }
-  }, []);
+  // // 关闭 WebSocket
+  // const closeWebSocket = useCallback(() => {
+  //   if (ws) {
+  //     ws.close();
+  //     ws = null;
+  //     setWsConnected(false);
+  //   }
+  // }, []);
 
   // 重置状态
   const reset = useCallback(() => {
@@ -244,38 +244,38 @@ export default function useGlobalModel(): GlobalModel {
     setStats(null);
     setNotifications([]);
     setUnreadCount(0);
-    closeWebSocket();
-  }, [closeWebSocket]);
+    // closeWebSocket();
+  }, []);
 
   // 初始化时从本地存储恢复状态
   useEffect(() => {
     // 恢复侧边栏状态
-    const savedCollapsed = localStorage.getItem('sidebar_collapsed');
+    const savedCollapsed = localStorage.getItem("sidebar_collapsed");
     if (savedCollapsed) {
-      setSidebarCollapsed(savedCollapsed === 'true');
+      setSidebarCollapsed(savedCollapsed === "true");
     }
 
     // 恢复主题
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark";
     if (savedTheme) {
       setTheme(savedTheme);
-      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
     }
 
     // 检查登录状态
     fetchCurrentUser();
   }, [fetchCurrentUser]);
 
-  // 当认证状态变化时，处理 WebSocket 连接
+  // 当认证状态变化时，处理 WebSocket 连接 (暂时禁用 WebSocket)
   useEffect(() => {
     if (authenticated) {
-      initWebSocket();
+      // initWebSocket();  // 暂时禁用
       fetchStats();
       fetchNotifications();
     } else {
-      closeWebSocket();
+      // closeWebSocket();  // 暂时禁用
     }
-  }, [authenticated, initWebSocket, closeWebSocket, fetchStats, fetchNotifications]);
+  }, [authenticated, fetchStats, fetchNotifications]);
 
   return {
     // 状态
@@ -288,7 +288,7 @@ export default function useGlobalModel(): GlobalModel {
     sidebarCollapsed,
     theme,
     wsConnected,
-    
+
     // 操作
     login,
     logout,
@@ -298,8 +298,8 @@ export default function useGlobalModel(): GlobalModel {
     markNotificationRead,
     toggleSidebar,
     toggleTheme,
-    initWebSocket,
-    closeWebSocket,
+    // initWebSocket,
+    // closeWebSocket,
     reset,
   };
 }
